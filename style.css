@@ -1,0 +1,138 @@
+
+
+
+html{
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+}
+/* 画面全体 */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #000;
+}
+/* 名前入力フォント */
+html, input {
+    font-family:
+      "HelveticaNeue-Light",
+      "Helvetica Neue Light",
+      "Helvetica Neue",
+      Helvetica,
+      Arial,
+      "Lucida Grande",
+      sans-serif;
+}
+/* 箇条書き */
+li {
+    list-style: none;
+    text-align: left;
+}
+/* 
+  Pages(login/lobby)
+   pagesを画面サイズいっぱいに設定する
+*/
+.pages {
+    height: 100%; 
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+/* 
+  Page(login/lobby)
+   各pageを絶対位置で画面サイズいっぱいに設定する
+*/
+.page {
+    height: 100%;
+    position: absolute;
+    width: 100%;
+ }
+/* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+/* Login Page */
+.login.page .form {]
+    height: 100px;
+    margin-top: -100px;
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    width: 100%;
+}
+.login.page .form .playernameInput {
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid #fff;
+    outline: none;
+    padding-bottom: 15px;
+    text-align: center;
+    width: 400px;
+}
+.login.page .title {
+    font-size: 200%;
+}
+.login.page .playernameInput {
+    font-size: 200%;
+    letter-spacing: 3px;
+}
+.login.page .title, .login.page .playernameInput {
+    color: #fff;
+    font-weight: 100;
+}
+/* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+/* lobby */
+.lobby {
+display: none;
+height: 100px;
+margin-top: 20px;
+/* position: absolute; */
+text-align: center;
+top: 10%;
+}
+.lobby.page .title {
+color: #fff;
+font-size: 200%;
+font-weight: 100;
+}
+.wrapper{
+color: #fff;
+height: 300px;
+width: 20%;
+font-size: 130%;
+margin: 0 auto;
+}
+.entries {
+display: inline-block;
+text-align: left;
+}
+.gamestart {
+    display: inline-block;
+    padding: 0.3em 1em;
+    text-decoration: none;
+    color: #fff;
+    border: solid 2px #fff;
+    background: #000;
+    border-radius: 3px;
+    transition: .4s;
+    font-size: 200%;
+}
+.gamestart:active {
+    /*ボタンを押したとき*/
+    background: #fff;
+    color: #000;
+}
+  /* .login.page {
+    display: none;
+  } */
+/* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+/* game */
+.game {
+    display: none;
+    color: #fff;
+    position: absolute;
+    text-align: center;
+    top:5px;
+}
+
+/* .arr {
+  color: #fff;
+  display: none;
+} */

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viwpoint" content="width=device-width, initial-scale=1.0">
+        <title> ガメ</title>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js"></script>
+        <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="./../lib/scenemanager.js"></script>
+        <script> var exports = {}; </script>
+        <!-- <script language="javascript" type="text/javascript" src="./lib/p5.scribble.js"></script> -->
+
+        <script src="./src/settings.js"></script>
+
+        <script src="./src/game.js"></script>
+
+
+
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <style> body{padding:0; margin:0;} </style>
+    </head>
+    <body>
+        <ul class="pages">
+            <li class="login page">
+                <div class="form">
+                    <h3 class="title">name</h3>
+                    <input class="playernameInput" type="text" maxlength="14" />
+                </div>
+            </li>
+            <li class="lobby page">
+                <div class="playerlist">
+                    <h3 class="title">PLAYERS</h3>
+                    <div class="wrapper">
+                        <div class="entries"></div>
+                    </div>
+                </div>
+                <button class="gamestart" type="button">GAME START</button>
+            </li>
+            <li class="game page">
+                <div>
+                    <div id="canvas"></div>
+                    <p>canvas下</p>
+                </div>
+            </li>
+        </ul>
+        
+    </body>
+</html>
