@@ -11,6 +11,7 @@ html, body {
     margin: 0;
     padding: 0;
     background-color: #000;
+    overflow: hidden;
 }
 /* 名前入力フォント */
 html, input {
@@ -49,7 +50,7 @@ li {
  }
 /* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
 /* Login Page */
-.login.page .form {]
+.login.page .form {
     height: 100px;
     margin-top: -100px;
     position: absolute;

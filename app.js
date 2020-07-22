@@ -5,7 +5,6 @@ var app = express();
 var server = app.listen(3000);
 
 var STS = require('./src/settings.js');
-console.log(STS.sts);
 
 app.use(express.static(__dirname));
 console.log('service start.');
@@ -13,7 +12,7 @@ console.log('service start.');
 var socket = require('socket.io');
 var io = socket(server);
 
-let id0 = Math.floor(Math.random() * 1000);
+let id0 = Math.floor(Math.random() * 900);
 
 // class Player{
 //     constructor(name){
@@ -33,15 +32,32 @@ let id0 = Math.floor(Math.random() * 1000);
 // }
 
 let players = [];
+let walls = [STS.sts.walls];
+let keys = [];
+
+for(let i = 0; i < STS.sts.walls; i++){
+    walls[i] = new STS.Wall(Math.floor(Math.random() * (STS.sts.width)), Math.floor(Math.random() * (STS.sts.height)));
+}
+console.log(walls);
+
+let objects = {players, walls, keys};
 
 io.sockets.on('connection', function(socket) {
     // 接続の確認
     console.log('new connection: '+socket.id);
+    // connectionのスコープ内でplayerを定義
+    let player = null;
 
     socket.on('adduser', function(playername){
         console.log("new one come");
-        // 新規接続者のインスタンス化
-        let player = new STS.Player(playername);
+        // playerのインスタンス化
+        while(true){
+            player = new STS.Player(playername);
+            if(!player.interscts(objects)){
+                break;
+            }
+            console.log("renew");
+        }
         player.id = id0;
         id0++;
         console.log(player.name);
@@ -62,16 +78,16 @@ io.sockets.on('connection', function(socket) {
         io.sockets.emit('players', players);
     });
     socket.on('GAME_START',function() {
-        io.sockets.emit('startgame', players);
+        io.sockets.emit('startgame', objects);
     });
-    socket.on('move', function(data) {
-        let obj = players[data.idx];
-        obj.x = data.x;
-        obj.y = data.y;
-        obj.agl = data.agl;
-        io.sockets.emit('update', players);
+    socket.on('move', function(keys) {
+        objects.keys = keys;
+        player.action(objects);
+        io.sockets.emit('update', objects);
         // socket.broadcast.emit('update', players);
     });
 
-
+    function addbullet() {
+        console.log('OK');
+    }
 })

@@ -1,12 +1,12 @@
 'use strict'
 
-// const { Player } = require("./settings");
-
 let socket;
 socket = io.connect('http://localhost:3000');
 
 
 let players = [];
+let walls = [];
+
 let playername;
 let myindex = 0;
 let mydata = {
@@ -70,106 +70,98 @@ socket.on('players', function(players){
 });
 
 // ゲーム画面
-socket.on('startgame',function(pls){
+socket.on('startgame',function(objs){
     $('.lobby').fadeOut();
     $('.game').fadeIn();
-    players = pls;
-    console.log(players.length);
+    players = objs.players;
+    walls = objs.walls;
+    console.log(objs);
 });
 ///////////// p5.js ////////////////
 function setup() {
     let canvas = createCanvas(sts.width, sts.height);
     canvas.parent('canvas');
+
 }
 let x = 0;
 function draw() {
-    background(100);
+    background(255);
     for(let idx = 0; idx < players.length; idx++){
-        // console.log(players[idx].name);
-        ellipse(players[idx].x, players[idx].y, sts.plsize, sts.plsize);
+        console.log(players[idx].name);
+        // ellipse(players[idx].x, players[idx].y, sts.plsize, sts.plsize);
+        showCharacter(players[idx]);
     }
+    walls.forEach(wall => {
+        push();
+        fill(0);
+        noStroke();
+        strokeWeight(2);
+        rect(wall.x, wall.y, wall.w, wall.h);
+        pop();        
+    });
+
     ellipse(100,100,50,50);
-    // if(keyIsPressed===true){
-    //     console.log('key is pressed');
-    //     // keycommand();
-    // }
-    ellipse(x, 200, 50,50);
-    if(keyIsPressed){
-      x += 1;
-      keycommand();
-    }
+
     if(ongame){
-        
-        console.log("mydata is "+mydata);
-        socket.emit('move',mydata);
+       
+        // console.log("mydata is "+mydata);
+        // socket.emit('move',mydata);
+        socket.emit('move', keys);
+
     }
-    
 }
-socket.on('update', function(pls){
-    players = pls;
-    mydata.x = players[myindex].x;
-    mydata.y = players[myindex].y;
-    mydata.agl = players[myindex].agl;
+socket.on('update', function(objs){
+    players = objs.players;
+    walls = objs.walls;
 });
-// function kiicoda(){
-//     console.log(keyCode);
-// }
 
-function keycommand(){
+// 使用するキーのkeycode一覧
+let gate = [32,68, 69, 70, 74, 75, 76, 83];
 
-    // let me = new Player('name');
-    // let me = players[myindex];
-    // console.log(me);
+// キーコマンドの配列
+let keys = {
+    '32':false,
+    '68':false,
+    '69':false,
+    '70':false,
+    '74':false,
+    '75':false,
+    '76':false,
+    '83':false
+}
 
-    console.log(mydata.x);
+function keyPressed(){
+    if(ongame){
+        if(gate.indexOf(keyCode) >= 0){
+            keys[keyCode]=true;
+            console.log(keys);
+            // socket.emit('move', keys);
+        }
+    }
+}
+function keyReleased(){
+    if(ongame){
+        if(gate.indexOf(keyCode) >= 0){
+            keys[keyCode]=false;
+            console.log(keys);
+        }
+    }
+}
 
-    // mydata.x = me.x;
-    // mydata.y = me.y;
-    // mydata.agl = me.agl;
-    // console.log("me"+me);
-    // console.log("mydata"+mydata);
-
-    // // 加速
-    // let acf = 1;
-    // if(keyIsDown(32)){acf = sts.acf;}
-    // // 動く
-    // switch (keyCode){
-     ////// 移動 //////////
-    //     // left : [s]
-    //     case 83:
-    //         mydata.x -= acf* sts.mvbit;
-    //         break;
-    //     // right : [f]
-    //     case 70:
-    //         mydata.x += acf* sts.mvbit;
-    //         break;
-    //     // up : [e]
-    //     case 69:
-    //         mydata.y -= acf* sts.mvbit;
-    //         break;
-    //     // down : [d]
-    //     case 68:
-    //         mydata.y += acf* sts.mvbit;
-    //         break;
-    //  ///// 砲台 ////////// 
-    //     // 時計周り
-    //     case 76:
-    //         mydata.agl += acf* sts.aglbit;
-    //         break;
-    //     // 反時計回り
-    //     case 74:
-    //         mydata.agl -= acf* sts.aglbit;
-    //         break;
-    //     // 発射
-    //     case 75:
-    //         // 球を撃つメソッド
-    //         break;
-    //     default:
-    //         break;
-    // }
-    // console.log(mydata);
-
-
-
-    // console.log(acf);
+function showCharacter(player){
+    let x = player.x;
+    let y = player.y;
+    let agl = player.agl;
+    push();
+    fill(0);
+    noStroke();
+    translate(x, y);
+    ellipse(0, 0, sts.plsize);
+    textAlign(CENTER);
+    text(player.name, 0, -sts.plsize*(2/3));
+    push();
+    rotate(agl);
+    triangle(player.plsize/2 + 7, 0, player.plsize/2, -3, player.plsize/2, 3);
+    pop();
+    pop();
 }
